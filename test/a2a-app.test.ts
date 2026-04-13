@@ -79,4 +79,82 @@ describe("a2aApp", () => {
     const res = await app.request("/", { method: "GET" });
     expect(res.status).toBe(404);
   });
+
+  it("rejects oversized JSON body with default 100KB limit", async () => {
+    const app = new Hono();
+    app.route("/", a2aApp({ requestHandler: createMockRequestHandler() }));
+
+    const hugeBody = JSON.stringify({
+      jsonrpc: "2.0",
+      id: "1",
+      method: "message/send",
+      params: { data: "x".repeat(200_000) },
+    });
+
+    const res = await app.request("/", {
+      method: "POST",
+      body: hugeBody,
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": String(new TextEncoder().encode(hugeBody).length),
+      },
+    });
+
+    expect(res.status).toBe(413);
+  });
+
+  it("allows custom maxBodySize", async () => {
+    const app = new Hono();
+    app.route(
+      "/",
+      a2aApp({
+        requestHandler: createMockRequestHandler(),
+        maxBodySize: 1024,
+      }),
+    );
+
+    const body = JSON.stringify({
+      jsonrpc: "2.0",
+      id: "1",
+      method: "message/send",
+      params: { data: "x".repeat(2000) },
+    });
+
+    const res = await app.request("/", {
+      method: "POST",
+      body,
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": String(new TextEncoder().encode(body).length),
+      },
+    });
+
+    expect(res.status).toBe(413);
+  });
+
+  it("accepts body under default limit", async () => {
+    const app = new Hono();
+    app.route("/", a2aApp({ requestHandler: createMockRequestHandler() }));
+
+    const smallBody = JSON.stringify({
+      jsonrpc: "2.0",
+      id: "1",
+      method: "message/send",
+      params: {
+        message: {
+          role: "user",
+          parts: [{ text: "Hello" }],
+          messageId: "m1",
+        },
+      },
+    });
+
+    const res = await app.request("/", {
+      method: "POST",
+      body: smallBody,
+      headers: { "Content-Type": "application/json" },
+    });
+
+    expect(res.status).not.toBe(413);
+  });
 });

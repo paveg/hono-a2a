@@ -28,4 +28,5 @@ export interface A2AAppOptions {
   userBuilder?: UserBuilder;
   agentCardPath?: string;
   agentCardProvider?: AgentCardProvider;
+  maxBodySize?: number;
 }
