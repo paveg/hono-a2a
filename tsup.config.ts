@@ -5,6 +5,6 @@ export default defineConfig({
   format: ["esm", "cjs"],
   dts: true,
   clean: true,
-  target: "es2022",
+  target: "es2024",
   external: ["hono", "@a2a-js/sdk"],
 });
