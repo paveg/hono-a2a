@@ -48,14 +48,11 @@ function createSSEResponse(
           controller.enqueue(encoder.encode(formatSSEEvent(event)));
         }
       } catch (streamError) {
+        console.error("SSE streaming error:", streamError);
         const a2aError =
           streamError instanceof A2AError
             ? streamError
-            : A2AError.internalError(
-                streamError instanceof Error
-                  ? streamError.message
-                  : "Streaming error.",
-              );
+            : A2AError.internalError("Streaming error.");
         controller.enqueue(
           encoder.encode(
             formatSSEErrorEvent({
