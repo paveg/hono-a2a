@@ -179,7 +179,39 @@ describe("jsonRpcHandler", () => {
       const errorData = chunks[1].split("\n").find((l) => l.startsWith("data: "));
       const parsed = JSON.parse(errorData!.replace(/^data: /, ""));
       expect(parsed.error).toBeDefined();
-      expect(parsed.error.message).toContain("stream exploded");
+      expect(parsed.error.message).toBe("Streaming error.");
+    });
+
+    it("does not leak internal error details in SSE error events", async () => {
+      async function* leakingStream() {
+        throw new Error("Connection to postgres://user:pass@host/db failed");
+      }
+
+      const handler = createMockRequestHandler(streamableCard, {
+        sendMessageStream: vi.fn().mockReturnValue(leakingStream()),
+      });
+
+      const app = new Hono();
+      app.post("/", jsonRpcHandler({ requestHandler: handler }));
+
+      const res = await app.request(
+        "/",
+        jsonRpcRequest("message/stream", {
+          message: { role: "user", parts: [{ text: "Hi" }], messageId: "u1" },
+        }),
+      );
+
+      const text = await res.text();
+      // Must NOT contain the internal connection string
+      expect(text).not.toContain("postgres://");
+      expect(text).not.toContain("user:pass");
+
+      // Should contain the generic error message
+      const errorChunk = text.split("\n\n").filter(Boolean).find(c => c.startsWith("event: error"));
+      expect(errorChunk).toBeDefined();
+      const errorData = errorChunk!.split("\n").find(l => l.startsWith("data: "));
+      const parsed = JSON.parse(errorData!.replace(/^data: /, ""));
+      expect(parsed.error.message).toBe("Streaming error.");
     });
   });
 
