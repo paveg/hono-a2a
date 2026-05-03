@@ -4,6 +4,7 @@
 	"description": "Hono adapter for A2A (Agent-to-Agent) protocol",
 	"license": "Apache-2.0",
 	"type": "module",
+	"sideEffects": false,
 	"exports": {
 		".": {
 			"import": {
@@ -57,6 +58,16 @@
 		"type": "git",
 		"url": "git+https://github.com/paveg/hono-a2a.git"
 	},
+	"homepage": "https://github.com/paveg/hono-a2a",
+	"bugs": {
+		"url": "https://github.com/paveg/hono-a2a/issues"
+	},
+	"funding": "https://github.com/sponsors/paveg",
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	},
+	"packageManager": "pnpm@10.14.0",
 	"engines": {
 		"node": ">=22"
 	},
