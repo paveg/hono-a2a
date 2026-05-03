@@ -7,6 +7,8 @@
 
 Serve A2A agents on **Cloudflare Workers, Deno, Bun, and Node.js** with zero production dependencies.
 
+> **Status: 0.x** — public API may change in minor releases until 1.0. This package targets the A2A protocol version supported by `@a2a-js/sdk@^0.3.x`. Catch-up to **A2A v1.0** (renamed methods, restructured agent card, JWS signatures, multi-tenancy) will land in a future release once `@a2a-js/sdk` adopts v1.0.
+
 ## Install
 
 ```bash
