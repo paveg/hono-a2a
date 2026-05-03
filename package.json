@@ -56,7 +56,10 @@
 			"@biomejs/biome",
 			"esbuild",
 			"lefthook"
-		]
+		],
+		"overrides": {
+			"uuid": "^14.0.0"
+		}
 	},
 	"repository": {
 		"type": "git",
