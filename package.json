@@ -1,55 +1,85 @@
 {
-  "name": "hono-a2a",
-  "version": "0.1.0",
-  "description": "Hono adapter for A2A (Agent-to-Agent) protocol",
-  "license": "Apache-2.0",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
-    }
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit"
-  },
-  "peerDependencies": {
-    "@a2a-js/sdk": ">=0.3.0",
-    "hono": ">=4.0.0"
-  },
-  "devDependencies": {
-    "@a2a-js/sdk": "^0.3.13",
-    "hono": "^4.7.10",
-    "tsup": "^8.5.0",
-    "typescript": "^5.8.3",
-    "vitest": "^4.1.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/paveg/hono-a2a.git"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "keywords": [
-    "hono",
-    "a2a",
-    "agent-to-agent",
-    "ai",
-    "agent"
-  ]
+	"name": "hono-a2a",
+	"version": "0.1.0",
+	"description": "Hono adapter for A2A (Agent-to-Agent) protocol",
+	"license": "Apache-2.0",
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		}
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:compat": "tsc -p tsconfig.compat.json",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write .",
+		"typecheck": "tsc --noEmit",
+		"release": "pnpm build && changeset publish",
+		"version-packages": "changeset version && pnpm lint:fix"
+	},
+	"peerDependencies": {
+		"@a2a-js/sdk": ">=0.3.0",
+		"hono": ">=4.0.0"
+	},
+	"devDependencies": {
+		"@a2a-js/sdk": "^0.3.13",
+		"@biomejs/biome": "^2.4.13",
+		"@changesets/changelog-github": "0.6.0",
+		"@changesets/cli": "2.31.0",
+		"@vitest/coverage-v8": "^4.1.5",
+		"hono": "^4.7.10",
+		"lefthook": "2.1.6",
+		"tsup": "^8.5.0",
+		"typescript": "^5.8.3",
+		"vitest": "^4.1.5"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@biomejs/biome",
+			"esbuild",
+			"lefthook"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/paveg/hono-a2a.git"
+	},
+	"homepage": "https://github.com/paveg/hono-a2a",
+	"bugs": {
+		"url": "https://github.com/paveg/hono-a2a/issues"
+	},
+	"funding": "https://github.com/sponsors/paveg",
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	},
+	"packageManager": "pnpm@10.14.0",
+	"engines": {
+		"node": ">=22"
+	},
+	"keywords": [
+		"hono",
+		"a2a",
+		"agent-to-agent",
+		"ai",
+		"agent"
+	]
 }
