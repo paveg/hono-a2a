@@ -1,6 +1,6 @@
 {
 	"name": "hono-a2a",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Hono adapter for A2A (Agent-to-Agent) protocol",
 	"license": "Apache-2.0",
 	"type": "module",
