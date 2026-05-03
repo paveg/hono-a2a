@@ -34,6 +34,7 @@ jobs:
           version: pnpm version-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Set ci-pass status on Version Packages PR
         if: steps.changesets.outputs.pullRequestNumber
         env:
